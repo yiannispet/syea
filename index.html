@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ΣΥΕΑ - Σύλλογος Υπαλλήλων Εθνικής Ασφαλιστικής</title>
+    <style>
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --info: #3B82F6;
+            --bg: #F3F4F6;
+            --surface: #FFFFFF;
+            --text: #1F2937;
+            --text-secondary: #6B7280;
+            --border: #E5E7EB;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --gradient-3: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-4: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .dark-mode {
+            --bg: #111827;
+            --surface: #1F2937;
+            --text: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --border: #374151;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        .header {
+            background: var(--gradient-1);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .header-title h1 { font-size: 1.3rem; font-weight: 700; }
+        .header-title .subtitle { font-size: 0.8rem; opacity: 0.9; }
+        .header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .header-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .header-btn:hover { background: rgba(255,255,255,0.3); }
+        .nav-tabs {
+            background: var(--surface);
+            display: flex;
+            border-bottom: 2px solid var(--border);
+            overflow-x: auto;
+            padding: 0 10px;
+        }
+        .nav-tab {
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .nav-tab:hover { color: var(--primary); }
+        .nav-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .main-content { padding: 20px; max-width: 1400px; margin: 0 auto; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .stat-card .icon { font-size: 30px; margin-bottom: 8px; }
+        .stat-card .value { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .stat-card .label { color: var(--text-secondary); font-size: 0.85rem; }
+        .card {
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .card-header h2 { font-size: 1.1rem; }
+        .card-body { padding: 20px; }
+        .card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-warning { background: var(--warning); color: #333; }
+        .btn-secondary { background: var(--border); color: var(--text); }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 8px 12px 8px 35px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+        }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th {
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+        .data-table tbody tr:hover { background: rgba(99, 102, 241, 0.05); }
+        .table-scroll { overflow-x: auto; max-height: 400px; overflow-y: auto; }
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-success { background: rgba(16,185,129,0.15); color: var(--success); }
+        .badge-warning { background: rgba(245,158,11,0.15); color: var(--warning); }
+        .badge-danger { background: rgba(239,68,68,0.15); color: var(--danger); }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--surface);
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            background: var(--gradient-1);
+            color: white;
+            padding: 20px;
+            border-radius: 16px 16px 0 0;
+        }
+        .modal-body { padding: 20px; }
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .portal-card {
+            color: white;
+            padding: 25px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .portal-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .portal-card.card-members { background: var(--gradient-1); }
+        .portal-card.card-org { background: var(--gradient-2); }
+        .portal-card.card-treasury { background: var(--gradient-3); }
+        .portal-card.card-elections { background: var(--gradient-4); }
+        .portal-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
+        .portal-card p { opacity: 0.9; font-size: 0.85rem; margin-bottom: 15px; }
+        .portal-card .card-stats { display: flex; gap: 20px; }
+        .portal-card .card-stat { text-align: center; }
+        .portal-card .card-stat .value { font-size: 1.5rem; font-weight: 700; }
+        .portal-card .card-stat .label { font-size: 0.75rem; opacity: 0.8; }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 2000;
+            animation: slideIn 0.3s ease;
+        }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+        .toast.info { background: var(--info); }
+        @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        .empty-state .icon { font-size: 50px; margin-bottom: 15px; }
+        .action-btns { display: flex; gap: 5px; }
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .action-btn.edit { background: var(--info); color: white; }
+        .action-btn.delete { background: var(--danger); color: white; }
+        @media (max-width: 768px) {
+            .header { flex-direction: column; text-align: center; }
+            .form-row { grid-template-columns: 1fr; }
+            .card-header { flex-direction: column; }
+            .search-box { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-title">
+            <h1>🏛️ ΣΥΕΑ</h1>
+            <div class="subtitle">Σύλλογος Υπαλλήλων Εθνικής Ασφαλιστικής</div>
+        </div>
+        <div class="header-actions">
+            <button class="header-btn" onclick="toggleDarkMode()" title="Dark Mode">
+                <span id="darkModeIcon">🌙</span>
+            </button>
+            <button class="header-btn" onclick="exportAllData()">📤 Εξαγωγή</button>
+            <button class="header-btn" onclick="document.getElementById('importFile').click()">📥 Εισαγωγή</button>
+            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importAllData(event)">
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="portal">🏠 Αρχική</button>
+        <button class="nav-tab" data-tab="members">👥 Μητρώο</button>
+        <button class="nav-tab" data-tab="employees">🏢 Οργανόγραμμα</button>
+        <button class="nav-tab" data-tab="treasury">💰 Ταμείο</button>
+        <button class="nav-tab" data-tab="elections">🗳️ Εκλογές</button>
+    </nav>
+
+    <main class="main-content">
+        <!-- Portal Tab -->
+        <div class="tab-content active" id="tab-portal">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon">👥</div>
+                    <div class="value" id="totalMembers">0</div>
+                    <div class="label">Μέλη</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">🏢</div>
+                    <div class="value" id="totalEmployees">0</div>
+                    <div class="label">Εργαζόμενοι</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">✅</div>
+                    <div class="value" id="tameiakosOk">0</div>
+                    <div class="label">Ταμ. Εντάξει</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">📅</div>
+                    <div class="value" id="lastUpdate">-</div>
+                    <div class="label">Ενημέρωση</div>
+                </div>
+            </div>
+
+            <div class="portal-grid">
+                <div class="portal-card card-members" onclick="showTab('members')">
+                    <h3>👥 Μητρώο Μελών</h3>
+                    <p>Διαχείριση μελών, στοιχεία επικοινωνίας</p>
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <div class="value" id="cardMembers">0</div>
+                            <div class="label">μέλη</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portal-card card-org" onclick="showTab('employees')">
+                    <h3>🏢 Οργανόγραμμα</h3>
+                    <p>Δομή οργανισμού, υπηρεσίες</p>
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <div class="value" id="cardEmployees">0</div>
+                            <div class="label">εργαζόμενοι</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portal-card card-treasury" onclick="showTab('treasury')">
+                    <h3>💰 Ταμείο</h3>
+                    <p>Συνδρομές, ασφάλιστρα</p>
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <div class="value" id="cardTreasury">0</div>
+                            <div class="label">εγγραφές</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portal-card card-elections" onclick="showTab('elections')">
+                    <h3>🗳️ Εκλογές</h3>
+                    <p>Εκλογικές διαδικασίες</p>
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <div class="value" id="cardElections">0</div>
+                            <div class="label">εκλογές</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Members Tab -->
+        <div class="tab-content" id="tab-members">
+            <div class="card">
+                <div class="card-header">
+                    <h2>👥 Μητρώο Μελών</h2>
+                    <div class="card-actions">
+                        <div class="search-box">
+                            <input type="text" id="searchMembers" placeholder="Αναζήτηση..." oninput="renderMembers()">
+                        </div>
+                        <button class="btn btn-primary" onclick="showModal('memberModal')">➕ Νέο Μέλος</button>
+                        <button class="btn btn-success" onclick="exportMembers()">📥 Excel</button>
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Ονοματεπώνυμο</th>
+                                <th>Email</th>
+                                <th>Τηλέφωνο</th>
+                                <th>Τμήμα</th>
+                                <th>Τύπος</th>
+                                <th>Κατάσταση</th>
+                                <th>Ενέργειες</th>
+                            </tr>
+                        </thead>
+                        <tbody id="membersTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Employees Tab -->
+        <div class="tab-content" id="tab-employees">
+            <div class="card">
+                <div class="card-header">
+                    <h2>🏢 Οργανόγραμμα</h2>
+                    <div class="card-actions">
+                        <div class="search-box">
+                            <input type="text" id="searchEmployees" placeholder="Αναζήτηση..." oninput="renderEmployees()">
+                        </div>
+                        <button class="btn btn-primary" onclick="showModal('employeeModal')">➕ Νέος Εργαζόμενος</button>
+                        <button class="btn btn-success" onclick="exportEmployees()">📥 Excel</button>
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Ονοματεπώνυμο</th>
+                                <th>Θέση</th>
+                                <th>Μονάδα</th>
+                                <th>Τηλέφωνο</th>
+                                <th>Email</th>
+                                <th>Μέλος</th>
+                                <th>Ενέργειες</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeesTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Treasury Tab -->
+        <div class="tab-content" id="tab-treasury">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon">📋</div>
+                    <div class="value" id="totalSubs">0</div>
+                    <div class="label">Συνδρομές</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">✅</div>
+                    <div class="value" id="paidOk">0</div>
+                    <div class="label">Εντάξει</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">⚠️</div>
+                    <div class="value" id="paidDelay">0</div>
+                    <div class="label">Καθυστέρηση</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">💶</div>
+                    <div class="value" id="totalOwed">0€</div>
+                    <div class="label">Οφειλές</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>💰 Συνδρομές</h2>
+                    <div class="card-actions">
+                        <div class="search-box">
+                            <input type="text" id="searchTreasury" placeholder="Αναζήτηση..." oninput="renderTreasury()">
+                        </div>
+                        <button class="btn btn-primary" onclick="showModal('treasuryModal')">➕ Νέα Εγγραφή</button>
+                        <button class="btn btn-success" onclick="exportTreasury()">📥 Excel</button>
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Όνομα</th>
+                                <th>Μην. Συνδρομή</th>
+                                <th>Πληρωμένοι</th>
+                                <th>Οφειλόμενοι</th>
+                                <th>Οφειλή €</th>
+                                <th>Κατάσταση</th>
+                                <th>Ενέργειες</th>
+                            </tr>
+                        </thead>
+                        <tbody id="treasuryTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Elections Tab -->
+        <div class="tab-content" id="tab-elections">
+            <div class="card">
+                <div class="card-header">
+                    <h2>🗳️ Εκλογές</h2>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="showModal('electionModal')">➕ Νέες Εκλογές</button>
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Τίτλος</th>
+                                <th>Ημερομηνία</th>
+                                <th>Ψηφοφόροι</th>
+                                <th>Έγκυρα</th>
+                                <th>Έδρες</th>
+                                <th>Κατάσταση</th>
+                                <th>Ενέργειες</th>
+                            </tr>
+                        </thead>
+                        <tbody id="electionsTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Member Modal -->
+    <div class="modal-overlay" id="memberModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="memberModalTitle">➕ Νέο Μέλος</h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="memberId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ονοματεπώνυμο *</label>
+                        <input type="text" id="memberName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="memberEmail">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Τηλέφωνο</label>
+                        <input type="text" id="memberPhone">
+                    </div>
+                    <div class="form-group">
+                        <label>Τμήμα</label>
+                        <input type="text" id="memberDept">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Τύπος</label>
+                        <select id="memberType">
+                            <option value="Υπάλληλος">Υπάλληλος</option>
+                            <option value="Γραμματέας">Γραμματέας</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Κατάσταση</label>
+                        <select id="memberStatus">
+                            <option value="active">Ενεργό</option>
+                            <option value="inactive">Ανενεργό</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('memberModal')">Ακύρωση</button>
+                <button class="btn btn-primary" onclick="saveMember()">💾 Αποθήκευση</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee Modal -->
+    <div class="modal-overlay" id="employeeModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="employeeModalTitle">➕ Νέος Εργαζόμενος</h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="employeeId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ονοματεπώνυμο *</label>
+                        <input type="text" id="employeeName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Θέση</label>
+                        <input type="text" id="employeePosition">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Μονάδα</label>
+                        <input type="text" id="employeeUnit">
+                    </div>
+                    <div class="form-group">
+                        <label>Τηλέφωνο</label>
+                        <input type="text" id="employeePhone">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="employeeEmail">
+                    </div>
+                    <div class="form-group">
+                        <label>Μέλος Συλλόγου</label>
+                        <select id="employeeMember">
+                            <option value="yes">Ναι</option>
+                            <option value="no">Όχι</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('employeeModal')">Ακύρωση</button>
+                <button class="btn btn-primary" onclick="saveEmployee()">💾 Αποθήκευση</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Treasury Modal -->
+    <div class="modal-overlay" id="treasuryModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="treasuryModalTitle">➕ Νέα Εγγραφή Ταμείου</h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="treasuryId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ονοματεπώνυμο *</label>
+                        <input type="text" id="treasuryName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Μηνιαία Συνδρομή €</label>
+                        <input type="number" id="treasuryMonthly" value="10" step="0.01">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Πληρωμένοι Μήνες</label>
+                        <input type="number" id="treasuryPaid" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Οφειλόμενοι Μήνες</label>
+                        <input type="number" id="treasuryOwed" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('treasuryModal')">Ακύρωση</button>
+                <button class="btn btn-primary" onclick="saveTreasury()">💾 Αποθήκευση</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Election Modal -->
+    <div class="modal-overlay" id="electionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="electionModalTitle">➕ Νέες Εκλογές</h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="electionId">
+                <div class="form-group">
+                    <label>Τίτλος *</label>
+                    <input type="text" id="electionTitle" placeholder="π.χ. Εκλογές 2025">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ημερομηνία</label>
+                        <input type="date" id="electionDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Έδρες</label>
+                        <input type="number" id="electionSeats" value="7">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ψηφοφόροι</label>
+                        <input type="number" id="electionVoters" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Έγκυρα Ψηφοδέλτια</label>
+                        <input type="number" id="electionValid" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Κατάσταση</label>
+                    <select id="electionStatus">
+                        <option value="planned">Προγραμματισμένες</option>
+                        <option value="completed">Ολοκληρωμένες</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('electionModal')">Ακύρωση</button>
+                <button class="btn btn-primary" onclick="saveElection()">💾 Αποθήκευση</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== DATA STORAGE ==========
+        let data = {
+            members: [],
+            employees: [],
+            treasury: [],
+            elections: []
+        };
+
+        // Load from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('syea_data');
+            if (saved) {
+                data = JSON.parse(saved);
+            }
+            updateAll();
+        }
+
+        // Save to localStorage
+        function saveData() {
+            localStorage.setItem('syea_data', JSON.stringify(data));
+            localStorage.setItem('syea_lastUpdate', new Date().toISOString());
+            updateAll();
+        }
+
+        // ========== RENDER FUNCTIONS ==========
+        function updateAll() {
+            updateStats();
+            renderMembers();
+            renderEmployees();
+            renderTreasury();
+            renderElections();
+        }
+
+        function updateStats() {
+            document.getElementById('totalMembers').textContent = data.members.length;
+            document.getElementById('totalEmployees').textContent = data.employees.length;
+            document.getElementById('cardMembers').textContent = data.members.length;
+            document.getElementById('cardEmployees').textContent = data.employees.length;
+            document.getElementById('cardTreasury').textContent = data.treasury.length;
+            document.getElementById('cardElections').textContent = data.elections.length;
+
+            // Treasury stats
+            const okCount = data.treasury.filter(t => t.owedMonths <= 0).length;
+            const delayCount = data.treasury.filter(t => t.owedMonths > 0).length;
+            const totalOwed = data.treasury.reduce((sum, t) => sum + (t.owedMonths * t.monthly), 0);
+            
+            document.getElementById('tameiakosOk').textContent = okCount;
+            document.getElementById('totalSubs').textContent = data.treasury.length;
+            document.getElementById('paidOk').textContent = okCount;
+            document.getElementById('paidDelay').textContent = delayCount;
+            document.getElementById('totalOwed').textContent = totalOwed.toFixed(0) + '€';
+
+            // Last update
+            const lastUpdate = localStorage.getItem('syea_lastUpdate');
+            if (lastUpdate) {
+                document.getElementById('lastUpdate').textContent = new Date(lastUpdate).toLocaleDateString('el-GR');
+            }
+        }
+
+        function renderMembers() {
+            const search = document.getElementById('searchMembers').value.toLowerCase();
+            const filtered = data.members.filter(m => 
+                m.name.toLowerCase().includes(search) ||
+                (m.email && m.email.toLowerCase().includes(search)) ||
+                (m.dept && m.dept.toLowerCase().includes(search))
+            );
+
+            const tbody = document.getElementById('membersTable');
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><div class="icon">👥</div><p>Δεν υπάρχουν μέλη</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(m => `
+                <tr>
+                    <td><strong>${m.name}</strong></td>
+                    <td>${m.email || '-'}</td>
+                    <td>${m.phone || '-'}</td>
+                    <td>${m.dept || '-'}</td>
+                    <td>${m.type || 'Υπάλληλος'}</td>
+                    <td><span class="badge ${m.status === 'active' ? 'badge-success' : 'badge-danger'}">${m.status === 'active' ? 'Ενεργό' : 'Ανενεργό'}</span></td>
+                    <td class="action-btns">
+                        <button class="action-btn edit" onclick="editMember('${m.id}')">✏️</button>
+                        <button class="action-btn delete" onclick="deleteMember('${m.id}')">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderEmployees() {
+            const search = document.getElementById('searchEmployees').value.toLowerCase();
+            const filtered = data.employees.filter(e => 
+                e.name.toLowerCase().includes(search) ||
+                (e.unit && e.unit.toLowerCase().includes(search)) ||
+                (e.position && e.position.toLowerCase().includes(search))
+            );
+
+            const tbody = document.getElementById('employeesTable');
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><div class="icon">🏢</div><p>Δεν υπάρχουν εργαζόμενοι</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(e => `
+                <tr>
+                    <td><strong>${e.name}</strong></td>
+                    <td>${e.position || '-'}</td>
+                    <td>${e.unit || '-'}</td>
+                    <td>${e.phone || '-'}</td>
+                    <td>${e.email || '-'}</td>
+                    <td><span class="badge ${e.isMember === 'yes' ? 'badge-success' : 'badge-warning'}">${e.isMember === 'yes' ? 'Ναι' : 'Όχι'}</span></td>
+                    <td class="action-btns">
+                        <button class="action-btn edit" onclick="editEmployee('${e.id}')">✏️</button>
+                        <button class="action-btn delete" onclick="deleteEmployee('${e.id}')">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderTreasury() {
+            const search = document.getElementById('searchTreasury').value.toLowerCase();
+            const filtered = data.treasury.filter(t => t.name.toLowerCase().includes(search));
+
+            const tbody = document.getElementById('treasuryTable');
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><div class="icon">💰</div><p>Δεν υπάρχουν εγγραφές</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(t => {
+                const owedAmount = t.owedMonths * t.monthly;
+                let statusClass = 'badge-success';
+                let statusText = 'Εντάξει';
+                if (t.owedMonths > 3) { statusClass = 'badge-danger'; statusText = 'Πρόβλημα'; }
+                else if (t.owedMonths > 0) { statusClass = 'badge-warning'; statusText = 'Καθυστέρηση'; }
+
+                return `
+                    <tr>
+                        <td><strong>${t.name}</strong></td>
+                        <td>€${t.monthly.toFixed(2)}</td>
+                        <td>${t.paidMonths}</td>
+                        <td>${t.owedMonths}</td>
+                        <td>€${owedAmount.toFixed(2)}</td>
+                        <td><span class="badge ${statusClass}">${statusText}</span></td>
+                        <td class="action-btns">
+                            <button class="action-btn edit" onclick="editTreasury('${t.id}')">✏️</button>
+                            <button class="action-btn delete" onclick="deleteTreasury('${t.id}')">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderElections() {
+            const tbody = document.getElementById('electionsTable');
+            if (data.elections.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><div class="icon">🗳️</div><p>Δεν υπάρχουν εκλογές</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = data.elections.map(e => `
+                <tr>
+                    <td><strong>${e.title}</strong></td>
+                    <td>${e.date ? new Date(e.date).toLocaleDateString('el-GR') : '-'}</td>
+                    <td>${e.voters || 0}</td>
+                    <td>${e.valid || 0}</td>
+                    <td>${e.seats || 7}</td>
+                    <td><span class="badge ${e.status === 'completed' ? 'badge-success' : 'badge-warning'}">${e.status === 'completed' ? 'Ολοκληρωμένες' : 'Προγραμματισμένες'}</span></td>
+                    <td class="action-btns">
+                        <button class="action-btn edit" onclick="editElection('${e.id}')">✏️</button>
+                        <button class="action-btn delete" onclick="deleteElection('${e.id}')">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ========== CRUD OPERATIONS ==========
+        function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
+
+        // Members
+        function saveMember() {
+            const id = document.getElementById('memberId').value;
+            const member = {
+                id: id || generateId(),
+                name: document.getElementById('memberName').value,
+                email: document.getElementById('memberEmail').value,
+                phone: document.getElementById('memberPhone').value,
+                dept: document.getElementById('memberDept').value,
+                type: document.getElementById('memberType').value,
+                status: document.getElementById('memberStatus').value
+            };
+
+            if (!member.name) { showToast('Το όνομα είναι υποχρεωτικό', 'error'); return; }
+
+            if (id) {
+                const idx = data.members.findIndex(m => m.id === id);
+                data.members[idx] = member;
+            } else {
+                data.members.push(member);
+            }
+
+            saveData();
+            closeModal('memberModal');
+            showToast('Μέλος αποθηκεύτηκε', 'success');
+        }
+
+        function editMember(id) {
+            const m = data.members.find(x => x.id === id);
+            document.getElementById('memberId').value = m.id;
+            document.getElementById('memberName').value = m.name;
+            document.getElementById('memberEmail').value = m.email || '';
+            document.getElementById('memberPhone').value = m.phone || '';
+            document.getElementById('memberDept').value = m.dept || '';
+            document.getElementById('memberType').value = m.type || 'Υπάλληλος';
+            document.getElementById('memberStatus').value = m.status || 'active';
+            document.getElementById('memberModalTitle').textContent = '✏️ Επεξεργασία Μέλους';
+            showModal('memberModal');
+        }
+
+        function deleteMember(id) {
+            if (confirm('Διαγραφή μέλους;')) {
+                data.members = data.members.filter(m => m.id !== id);
+                saveData();
+                showToast('Μέλος διαγράφηκε', 'info');
+            }
+        }
+
+        // Employees
+        function saveEmployee() {
+            const id = document.getElementById('employeeId').value;
+            const employee = {
+                id: id || generateId(),
+                name: document.getElementById('employeeName').value,
+                position: document.getElementById('employeePosition').value,
+                unit: document.getElementById('employeeUnit').value,
+                phone: document.getElementById('employeePhone').value,
+                email: document.getElementById('employeeEmail').value,
+                isMember: document.getElementById('employeeMember').value
+            };
+
+            if (!employee.name) { showToast('Το όνομα είναι υποχρεωτικό', 'error'); return; }
+
+            if (id) {
+                const idx = data.employees.findIndex(e => e.id === id);
+                data.employees[idx] = employee;
+            } else {
+                data.employees.push(employee);
+            }
+
+            saveData();
+            closeModal('employeeModal');
+            showToast('Εργαζόμενος αποθηκεύτηκε', 'success');
+        }
+
+        function editEmployee(id) {
+            const e = data.employees.find(x => x.id === id);
+            document.getElementById('employeeId').value = e.id;
+            document.getElementById('employeeName').value = e.name;
+            document.getElementById('employeePosition').value = e.position || '';
+            document.getElementById('employeeUnit').value = e.unit || '';
+            document.getElementById('employeePhone').value = e.phone || '';
+            document.getElementById('employeeEmail').value = e.email || '';
+            document.getElementById('employeeMember').value = e.isMember || 'no';
+            document.getElementById('employeeModalTitle').textContent = '✏️ Επεξεργασία Εργαζομένου';
+            showModal('employeeModal');
+        }
+
+        function deleteEmployee(id) {
+            if (confirm('Διαγραφή εργαζομένου;')) {
+                data.employees = data.employees.filter(e => e.id !== id);
+                saveData();
+                showToast('Εργαζόμενος διαγράφηκε', 'info');
+            }
+        }
+
+        // Treasury
+        function saveTreasury() {
+            const id = document.getElementById('treasuryId').value;
+            const entry = {
+                id: id || generateId(),
+                name: document.getElementById('treasuryName').value,
+                monthly: parseFloat(document.getElementById('treasuryMonthly').value) || 10,
+                paidMonths: parseInt(document.getElementById('treasuryPaid').value) || 0,
+                owedMonths: parseInt(document.getElementById('treasuryOwed').value) || 0
+            };
+
+            if (!entry.name) { showToast('Το όνομα είναι υποχρεωτικό', 'error'); return; }
+
+            if (id) {
+                const idx = data.treasury.findIndex(t => t.id === id);
+                data.treasury[idx] = entry;
+            } else {
+                data.treasury.push(entry);
+            }
+
+            saveData();
+            closeModal('treasuryModal');
+            showToast('Εγγραφή αποθηκεύτηκε', 'success');
+        }
+
+        function editTreasury(id) {
+            const t = data.treasury.find(x => x.id === id);
+            document.getElementById('treasuryId').value = t.id;
+            document.getElementById('treasuryName').value = t.name;
+            document.getElementById('treasuryMonthly').value = t.monthly;
+            document.getElementById('treasuryPaid').value = t.paidMonths;
+            document.getElementById('treasuryOwed').value = t.owedMonths;
+            document.getElementById('treasuryModalTitle').textContent = '✏️ Επεξεργασία';
+            showModal('treasuryModal');
+        }
+
+        function deleteTreasury(id) {
+            if (confirm('Διαγραφή εγγραφής;')) {
+                data.treasury = data.treasury.filter(t => t.id !== id);
+                saveData();
+                showToast('Εγγραφή διαγράφηκε', 'info');
+            }
+        }
+
+        // Elections
+        function saveElection() {
+            const id = document.getElementById('electionId').value;
+            const election = {
+                id: id || generateId(),
+                title: document.getElementById('electionTitle').value,
+                date: document.getElementById('electionDate').value,
+                seats: parseInt(document.getElementById('electionSeats').value) || 7,
+                voters: parseInt(document.getElementById('electionVoters').value) || 0,
+                valid: parseInt(document.getElementById('electionValid').value) || 0,
+                status: document.getElementById('electionStatus').value
+            };
+
+            if (!election.title) { showToast('Ο τίτλος είναι υποχρεωτικός', 'error'); return; }
+
+            if (id) {
+                const idx = data.elections.findIndex(e => e.id === id);
+                data.elections[idx] = election;
+            } else {
+                data.elections.push(election);
+            }
+
+            saveData();
+            closeModal('electionModal');
+            showToast('Εκλογές αποθηκεύτηκαν', 'success');
+        }
+
+        function editElection(id) {
+            const e = data.elections.find(x => x.id === id);
+            document.getElementById('electionId').value = e.id;
+            document.getElementById('electionTitle').value = e.title;
+            document.getElementById('electionDate').value = e.date || '';
+            document.getElementById('electionSeats').value = e.seats || 7;
+            document.getElementById('electionVoters').value = e.voters || 0;
+            document.getElementById('electionValid').value = e.valid || 0;
+            document.getElementById('electionStatus').value = e.status || 'planned';
+            document.getElementById('electionModalTitle').textContent = '✏️ Επεξεργασία Εκλογών';
+            showModal('electionModal');
+        }
+
+        function deleteElection(id) {
+            if (confirm('Διαγραφή εκλογών;')) {
+                data.elections = data.elections.filter(e => e.id !== id);
+                saveData();
+                showToast('Εκλογές διαγράφηκαν', 'info');
+            }
+        }
+
+        // ========== EXPORT/IMPORT ==========
+        function exportAllData() {
+            const exportData = {
+                version: '1.0',
+                exportDate: new Date().toISOString(),
+                data: data
+            };
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SYEA_Backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            showToast('Εξαγωγή ολοκληρώθηκε', 'success');
+        }
+
+        function importAllData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.data) {
+                        data = imported.data;
+                        saveData();
+                        showToast(`Εισαγωγή: ${data.members.length} μέλη, ${data.employees.length} εργαζόμενοι`, 'success');
+                    }
+                } catch (err) {
+                    showToast('Σφάλμα ανάγνωσης αρχείου', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function exportMembers() {
+            let csv = 'Ονομα,Email,Τηλέφωνο,Τμήμα,Τύπος,Κατάσταση\n';
+            data.members.forEach(m => {
+                csv += `"${m.name}","${m.email||''}","${m.phone||''}","${m.dept||''}","${m.type||''}","${m.status||''}"\n`;
+            });
+            downloadCSV(csv, 'SYEA_Members.csv');
+        }
+
+        function exportEmployees() {
+            let csv = 'Ονομα,Θέση,Μονάδα,Τηλέφωνο,Email,Μέλος\n';
+            data.employees.forEach(e => {
+                csv += `"${e.name}","${e.position||''}","${e.unit||''}","${e.phone||''}","${e.email||''}","${e.isMember||''}"\n`;
+            });
+            downloadCSV(csv, 'SYEA_Employees.csv');
+        }
+
+        function exportTreasury() {
+            let csv = 'Ονομα,Μηνιαία,Πληρωμένοι,Οφειλόμενοι,Οφειλή\n';
+            data.treasury.forEach(t => {
+                csv += `"${t.name}",${t.monthly},${t.paidMonths},${t.owedMonths},${t.owedMonths*t.monthly}\n`;
+            });
+            downloadCSV(csv, 'SYEA_Treasury.csv');
+        }
+
+        function downloadCSV(csv, filename) {
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+        }
+
+        // ========== UI FUNCTIONS ==========
+        function showTab(tabId) {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            // Reset form
+            document.querySelectorAll(`#${modalId} input`).forEach(i => { if(i.type !== 'hidden') i.value = ''; });
+        }
+
+        function showToast(msg, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            document.getElementById('darkModeIcon').textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('syea_darkMode', isDark);
+        }
+
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            // Dark mode
+            if (localStorage.getItem('syea_darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkModeIcon').textContent = '☀️';
+            }
+
+            // Tab navigation
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', () => showTab(tab.dataset.tab));
+            });
+
+            // Close modal on outside click
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) overlay.classList.remove('active');
+                });
+            });
+
+            // Load data
+            loadData();
+        });
+    </script>
+</body>
+</html>
